@@ -61,6 +61,9 @@ public:
     WiFiCredential wifiAp = {"BruceNet", "brucenet"};
     std::map<String, String> wifi = {};
 
+    // Bluetooth
+    String bleName = "Keyboard";
+
     // IR
     int irTx = LED;
     int irRx = GROVE_SCL;
@@ -139,6 +142,9 @@ public:
     void addQrCodeEntry(const String& menuName, const String& content);
     void removeQrCodeEntry(const String& menuName);
     String getWifiPassword(const String& ssid) const;
+
+    // Bluetooth
+    void setBleName(String value);
 
     // IR
     void setIrTxPin(int value);

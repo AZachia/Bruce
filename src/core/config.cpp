@@ -17,6 +17,8 @@ JsonDocument BruceConfig::toJson() const {
     setting["soundEnabled"] = soundEnabled;
     setting["wifiAtStartup"] = wifiAtStartup;
 
+    setting["bleName"] = bleName;
+
     setting["ledBright"] = ledBright;
     setting["ledColor"] = String(ledColor, HEX);
 
@@ -104,6 +106,8 @@ void BruceConfig::fromFile() {
     if(!setting["tmz"].isNull())       { tmz       = setting["tmz"].as<int>(); } else { count++; log_e("Fail"); }
     if(!setting["soundEnabled"].isNull())    { soundEnabled  = setting["soundEnabled"].as<int>(); } else { count++; log_e("Fail"); }
     if(!setting["wifiAtStartup"].isNull())   { wifiAtStartup = setting["wifiAtStartup"].as<int>(); } else { count++; log_e("Fail"); }
+
+    if(!setting["bleName"].isNull())   { bleName   = setting["bleName"].as<String>(); } else { count++; log_e("Fail"); }
 
     if(!setting["ledBright"].isNull()) { ledBright = setting["ledBright"].as<int>(); } else { count++; log_e("Fail"); }
     if(!setting["ledColor"].isNull())  { ledColor  = strtoul(setting["ledColor"], nullptr, 16); } else { count++; log_e("Fail"); }
@@ -507,5 +511,11 @@ void BruceConfig::addQrCodeEntry(const String& menuName, const String& content) 
 void BruceConfig::removeQrCodeEntry(const String& menuName) {
     qrCodes.erase(std::remove_if(qrCodes.begin(), qrCodes.end(),
         [&](const QrCodeEntry& entry) { return entry.menuName == menuName; }), qrCodes.end());
+    saveFile();
+}
+
+
+void BruceConfig::setBleName(String value) {
+    bleName = value;
     saveFile();
 }

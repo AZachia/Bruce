@@ -5,16 +5,29 @@
 #include "core/mykeyboard.h"
 #include "core/mykeyboard.h"
 #include "bad_ble.h"
+#include "core/config.h"
 
 #define DEF_DELAY 100
 
 BleKeyboard Kble;
-String bleName;
+String defaultBleName = bruceConfig.bleName;
+String BadbleName;
 
 void initializeBleKeyboard() {
 
-  bleName = keyboard("keyboard", 30, "BAD ble name:");
-  Kble = BleKeyboard(String(bleName).c_str(), "BruceNet", 98);
+  Serial.println("defaultBleName: " + defaultBleName);
+
+  BadbleName = keyboard(String(bruceConfig.bleName), 20, "Set the BLE name:");
+  
+  if (BadbleName == "") {
+    BadbleName = defaultBleName;
+  }
+
+  if (BadbleName != defaultBleName) {
+    bruceConfig.setBleName(String(BadbleName));
+  }
+  
+  Kble = BleKeyboard(String(BadbleName).c_str(), "BruceNet", 98);
 }
 
 uint8_t Ask_for_restart=0;
