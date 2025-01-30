@@ -3,10 +3,20 @@
 #include "core/main_menu.h"
 #include "core/display.h"
 #include "core/mykeyboard.h"
+#include "core/mykeyboard.h"
 #include "bad_ble.h"
 
 #define DEF_DELAY 100
-BleKeyboard Kble(String("Keyboard_" + String((uint8_t)(ESP.getEfuseMac() >> 32), HEX)).c_str(), "BruceNet", 98);
+
+BleKeyboard Kble;
+String bleName;
+
+void initializeBleKeyboard() {
+
+  bleName = keyboard("keyboard", 30, "BAD ble name:");
+  Kble = BleKeyboard(String(bleName).c_str(), "BruceNet", 98);
+}
+
 uint8_t Ask_for_restart=0;
 /* Example of payload file
 
@@ -234,6 +244,7 @@ bool ask_restart() {
 
 
 void ble_setup() {
+  initializeBleKeyboard();
   if(ask_restart()) return;
   FS *fs;
   Serial.println("BadBLE begin");
